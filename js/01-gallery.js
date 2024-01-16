@@ -1,37 +1,31 @@
 import { galleryItems } from "./gallery-items.js";
-const gallery = document.querySelector(".gallery");
+// Change code below this line
+const ulGallery = document.querySelector(".gallery");
+const liGallery = galleryItems
+  .map(
+    (image) =>
+      `<li class="gallery__item"><a class="gallery__link" href="${image.original}"><img class="gallery__image" src="${image.preview}" data-source="${image.original}" alt="${image.description}" />
+    </a></li>`
+  )
+  .join("");
 
-document.body.addEventListener("keypress", (e) => {
-  if (e.key === "Escape") basicLightbox.close();
+ulGallery.innerHTML = liGallery;
+
+//MODAL
+ulGallery.addEventListener("click", (e) => {
+  e.preventDefault();
+  if (e.target.classList.contains("gallery__image")) {
+    const instance = basicLightbox.create(`
+      <img src="${e.target.dataset.source}">
+    `);
+    instance.show();
+
+    const closeOnEscape = (event) => {
+      if (event.code === "Escape") {
+        instance.close();
+        document.removeEventListener("keydown", closeOnEscape);
+      }
+    };
+    document.addEventListener("keydown", closeOnEscape);
+  }
 });
-
-for (let item of galleryItems) {
-  const galleryItem = document.createElement("div");
-  galleryItem.classList.add("gallery__item");
-
-  const galleryLink = document.createElement("a");
-  galleryLink.classList.add("gallery__link");
-  galleryLink.href = item.original;
-
-  const galleryImage = document.createElement("img");
-  galleryImage.classList.add("gallery__image");
-  galleryImage.src = item.preview;
-  galleryImage.dataset.source = item.original;
-  galleryImage.alt = item.description;
-
-  galleryLink.appendChild(galleryImage);
-  galleryItem.appendChild(galleryLink);
-  gallery.appendChild(galleryItem);
-}
-
-gallery.addEventListener("click", (event) => {
-  event.preventDefault();
-
-  const lightbox = basicLightbox.create(`
-    <img src="${event.target.dataset.source}" width="800" height="600">
-  `);
-
-  lightbox.show();
-});
-
-console.log(galleryItems);
