@@ -34,6 +34,4 @@ gallery.addEventListener("click", (event) => {
   lightbox.show();
 });
 
-// Change code below this line
-
 console.log(galleryItems);
