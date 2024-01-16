@@ -11,7 +11,10 @@ const liGallery = galleryItems
 
 ulGallery.innerHTML = liGallery;
 
+
 //MODAL
+
+
 ulGallery.addEventListener("click", (e) => {
   e.preventDefault();
   if (e.target.classList.contains("gallery__image")) {
